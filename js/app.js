@@ -329,9 +329,9 @@ function loadQuestion() {
  */
 function selectOption(optionElement, index) {
     // Verifica se já foi selecionada uma opção
-    if (document.querySelector('.option.selected')) {
-        return;
-    }
+    if (document.querySelector('.option-btn.selected')) {
+    return;
+}
     
     const question = currentQuestions[currentQuestionIndex];
     const isCorrect = index === question.correctIndex;
@@ -348,8 +348,8 @@ function selectOption(optionElement, index) {
         incorrectAnswers++;
         
         // Destaca a opção correta
-        const options = document.querySelectorAll('.option');
-        options[question.correctIndex].classList.add('correct');
+        const options = document.querySelectorAll('.option-btn');
+options[question.correctIndex].classList.add('correct');
     }
     
     // Mostra a explicação
