@@ -282,6 +282,7 @@ function loadQuestion() {
         return;
     }
     
+    
     const question = currentQuestions[currentQuestionIndex];
     
     // Atualiza o título do módulo
@@ -297,17 +298,31 @@ function loadQuestion() {
     const optionsContainer = document.getElementById('options-container');
     optionsContainer.innerHTML = '';
     
-    // Adiciona as novas opções
+    // Adiciona as novas opções - CORREÇÃO: Usando as classes corretas
     question.options.forEach((option, index) => {
-    const optionElement = document.createElement('div');
-    optionElement.className = 'option-btn mb-2 p-3 border rounded';
-    optionElement.textContent = option;
-    optionElement.dataset.index = index;
-    
-    optionElement.addEventListener('click', () => selectOption(optionElement, index));
-    
-    optionsContainer.appendChild(optionElement);
-});
+        const optionElement = document.createElement('div');
+        // Usa a classe option-btn em vez de option
+        optionElement.className = 'option-btn';
+        
+        // Adiciona o número da opção com a formatação correta
+        const optionNumber = document.createElement('div');
+        optionNumber.className = 'option-number';
+        optionNumber.textContent = index;
+        optionElement.appendChild(optionNumber);
+        
+        // Adiciona o texto da opção
+        const optionText = document.createElement('span');
+        optionText.textContent = option;
+        optionElement.appendChild(optionText);
+        
+        // Adiciona o data-index para identificação
+        optionElement.dataset.index = index;
+        
+        // Adiciona o evento de clique
+        optionElement.addEventListener('click', () => selectOption(optionElement, index));
+        
+        optionsContainer.appendChild(optionElement);
+    });
     
     // Esconde a explicação
     document.getElementById('explanation-container').classList.add('d-none');
@@ -315,23 +330,16 @@ function loadQuestion() {
     // Reseta os botões de dificuldade
     document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('selected'));
     
-    // Desabilita o botão de próxima questão
-    document.getElementById('next-question-btn').disabled = true;
-    
-    // Esconde os botões de dificuldade
+    // Esconde os botões de dificuldade - CORREÇÃO: Usando o ID correto
     document.getElementById('spaced-repetition-container').classList.add('d-none');
 }
 
-/**
- * Seleciona uma opção de resposta
- * @param {HTMLElement} optionElement - Elemento da opção
- * @param {number} index - Índice da opção
- */
+// Função para selecionar uma opção
 function selectOption(optionElement, index) {
-    // Verifica se já foi selecionada uma opção
+    // Verifica se já foi selecionada uma opção - CORREÇÃO: Usando a classe correta
     if (document.querySelector('.option-btn.selected')) {
-    return;
-}
+        return;
+    }
     
     const question = currentQuestions[currentQuestionIndex];
     const isCorrect = index === question.correctIndex;
@@ -347,9 +355,9 @@ function selectOption(optionElement, index) {
         optionElement.classList.add('incorrect');
         incorrectAnswers++;
         
-        // Destaca a opção correta
+        // Destaca a opção correta - CORREÇÃO: Usando a classe correta
         const options = document.querySelectorAll('.option-btn');
-options[question.correctIndex].classList.add('correct');
+        options[question.correctIndex].classList.add('correct');
     }
     
     // Mostra a explicação
@@ -357,7 +365,7 @@ options[question.correctIndex].classList.add('correct');
     explanationContainer.classList.remove('d-none');
     document.getElementById('explanation-text').textContent = question.explanation;
     
-    // Mostra os botões de dificuldade
+    // Mostra os botões de dificuldade - CORREÇÃO: Usando o ID correto
     document.getElementById('spaced-repetition-container').classList.remove('d-none');
     
     // Atualiza o progresso do usuário
@@ -368,19 +376,17 @@ options[question.correctIndex].classList.add('correct');
     }
 }
 
-/**
- * Avança para a próxima questão
- */
+// Função para avançar para a próxima questão
 function nextQuestion() {
-    // Verifica se foi selecionada uma opção
-    if (!document.querySelector('.option.selected')) {
+    // Verifica se foi selecionada uma opção - CORREÇÃO: Usando a classe correta
+    if (!document.querySelector('.option-btn.selected')) {
         alert('Por favor, selecione uma opção antes de continuar.');
         return;
     }
     
-    // Verifica se foi selecionada uma dificuldade
+    // Verifica se foi selecionada uma dificuldade - CORREÇÃO: Usando o ID correto
     if (document.getElementById('spaced-repetition-container').classList.contains('d-none') === false && 
-    !document.querySelector('.difficulty-btn.selected')) {
+        !document.querySelector('.difficulty-btn.selected')) {
         alert('Por favor, avalie a dificuldade da questão antes de continuar.');
         return;
     }
