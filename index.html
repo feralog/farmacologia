@@ -4,224 +4,375 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Farmacologia - Sistema de Repetição Espaçada</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Estilos gerais */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        /* Cabeçalho */
+        .quiz-header {
+            background-color: #5470F8;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-title {
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .timer-and-button {
+            display: flex;
+            align-items: center;
+        }
+
+        .quiz-timer {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-right: 15px;
+        }
+
+        .voltar-btn {
+            background-color: white;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 15px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Info Bar */
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            margin-top: 10px;
+        }
+
+        .question-info span {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+
+        .conteudista {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .question-number {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .score span {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+
+        .corretas {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .incorretas {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Questão */
+        .question {
+            padding: 10px 15px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Opções */
+        .options {
+            padding: 0 15px;
+        }
+
+        .option {
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            position: relative;
+            padding-left: 45px;
+        }
+
+        .option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .option-number {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+
+        .option.selected {
+            border-color: #5470F8;
+        }
+
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .option.correct .option-number {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .option.incorrect .option-number {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Explicação */
+        .explanation {
+            margin: 15px;
+            padding: 15px;
+            background-color: #d1ecf1;
+            border-radius: 6px;
+            color: #0c5460;
+        }
+
+        .explanation h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+
+        /* Avaliação de dificuldade */
+        .difficulty-evaluation {
+            margin: 15px;
+        }
+
+        .difficulty-evaluation h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-options {
+            display: flex;
+            width: 100%;
+        }
+
+        .difficulty-btn {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .difficulty-btn:first-child {
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+        }
+
+        .difficulty-btn:last-child {
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        .difficulty-btn.selected {
+            font-weight: bold;
+        }
+
+        .muito-dificil {
+            color: #dc3545;
+        }
+        .muito-dificil.selected {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .dificil {
+            color: #fd7e14;
+        }
+        .dificil.selected {
+            background-color: #fff3cd;
+            border-color: #fd7e14;
+        }
+
+        .medio {
+            color: #6c757d;
+        }
+        .medio.selected {
+            background-color: #e9ecef;
+            border-color: #6c757d;
+        }
+
+        .facil {
+            color: #0d6efd;
+        }
+        .facil.selected {
+            background-color: #cfe2ff;
+            border-color: #0d6efd;
+        }
+
+        .muito-facil {
+            color: #198754;
+        }
+        .muito-facil.selected {
+            background-color: #d1e7dd;
+            border-color: #198754;
+        }
+
+        /* Botão de próxima */
+        .next-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            background-color: #5470F8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        /* Progresso */
+        .progress-bar-container {
+            height: 4px;
+            background-color: #e9ecef;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #5470F8;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <!-- Tela de Login -->
-        <div id="login-screen" class="screen">
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4">
-                    <div class="card shadow-lg mt-5">
-                        <div class="card-header bg-primary text-white text-center">
-                            <h2>Farmacologia</h2>
-                            <p class="mb-0">Sistema de Quiz com Repetição Espaçada</p>
-                        </div>
-                        <div class="card-body">
-                            <form id="login-form">
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Nome de Usuário</label>
-                                    <input type="text" class="form-control" id="username" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100">Entrar</button>
-                                <div class="mt-3">
-                                  <button type="button" id="reset-progress-btn" class="btn btn-outline-danger w-100">Resetar Todo o Progresso</button>
-                                    </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <div class="quiz-header">
+            <div class="quiz-title">Opioides</div>
+            <div class="timer-and-button">
+                <div class="quiz-timer">01:27</div>
+                <button class="voltar-btn">Voltar</button>
             </div>
         </div>
 
-        <!-- Tela de Seleção de Módulo -->
-        <div id="module-selection-screen" class="screen d-none">
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6">
-                    <div class="card shadow-lg mt-5">
-                        <div class="card-header bg-primary text-white">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h2>Selecione o Módulo</h2>
-                                <div>
-                                    <span id="user-display" class="me-2"></span>
-                                    <button id="logout-btn" class="btn btn-sm btn-light">Sair</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="list-group">
-                                <button class="list-group-item list-group-item-action module-btn" data-module="AINES_E_AIES">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span>AINES E AIES</span>
-                                        <span class="badge bg-primary rounded-pill module-progress" data-module="AINES_E_AIES">0%</span>
-                                    </div>
-                                </button>
-                                <button class="list-group-item list-group-item-action module-btn" data-module="Anestesicos_Gerais">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span>Anestésicos Gerais</span>
-                                        <span class="badge bg-primary rounded-pill module-progress" data-module="Anestesicos_Gerais">0%</span>
-                                    </div>
-                                </button>
-                                <button class="list-group-item list-group-item-action module-btn" data-module="Anestesicos_Locais">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span>Anestésicos Locais</span>
-                                        <span class="badge bg-primary rounded-pill module-progress" data-module="Anestesicos_Locais">0%</span>
-                                    </div>
-                                </button>
-                                <button class="list-group-item list-group-item-action module-btn" data-module="ATIPICOS">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span>Antipsicóticos Atípicos</span>
-                                        <span class="badge bg-primary rounded-pill module-progress" data-module="ATIPICOS">0%</span>
-                                    </div>
-                                </button>
-                                <!-- Adicione este novo botão: -->
-    <button class="btn btn-outline-primary module-btn w-100 mb-3" data-module="Opioides">
-        Opioides
-        <span class="badge bg-primary progress-badge">0%</span>
-    </button>
-                            </div>
-                            <div class="mt-4">
-                                <button id="start-review-btn" class="btn btn-success w-100">
-                                    <i class="fas fa-sync-alt me-2"></i>Iniciar Revisão Espaçada
-                                </button>
-                                <div class="mt-3">
-                                    <div class="d-flex justify-content-between">
-                                        <span>Progresso Geral:</span>
-                                        <span id="overall-progress">0%</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div id="overall-progress-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Barra de informações -->
+        <div class="info-bar">
+            <div class="question-info">
+                <span class="question-number">1/33</span>
+            </div>
+            <div class="score">
+                <span class="corretas">Corretas: 0</span>
+                <span class="incorretas">Incorretas: 0</span>
             </div>
         </div>
 
-        <!-- Tela do Quiz -->
-        <div id="quiz-screen" class="screen d-none">
-            <div class="row justify-content-center">
-                <div class="col-md-10 col-lg-8">
-                    <div class="card shadow-lg mt-3">
-                        <div class="card-header bg-primary text-white">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h3 id="quiz-title">Quiz</h3>
-                                <div>
-                                    <span id="timer" class="me-3"><i class="fas fa-clock me-1"></i>00:00</span>
-                                    <button id="quit-quiz-btn" class="btn btn-sm btn-light">Voltar</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between mb-3">
-                                <div>
-                                    <span class="badge bg-info" id="question-type"></span>
-                                    <span class="badge bg-secondary ms-2" id="question-number"></span>
-                                </div>
-                                <div>
-                                    <span class="badge bg-success" id="correct-count">Corretas: 0</span>
-                                    <span class="badge bg-danger ms-2" id="incorrect-count">Incorretas: 0</span>
-                                </div>
-                            </div>
-                            
-                            <div id="question-container">
-                                <h4 id="question-text" class="mb-4"></h4>
-                                <div id="options-container" class="mb-4"></div>
-                            </div>
-                            
-                            <div id="explanation-container" class="d-none">
-                                <div class="alert alert-info">
-                                    <h5>Explicação:</h5>
-                                    <p id="explanation-text"></p>
-                                </div>
-                                
-                                <div id="spaced-repetition-container" class="mb-3">
-                                    <h5>Quão difícil foi esta questão?</h5>
-                                    <div class="btn-group w-100">
-                                        <button class="btn btn-outline-danger difficulty-btn" data-difficulty="1">Muito Difícil</button>
-                                        <button class="btn btn-outline-warning difficulty-btn" data-difficulty="2">Difícil</button>
-                                        <button class="btn btn-outline-secondary difficulty-btn" data-difficulty="3">Médio</button>
-                                        <button class="btn btn-outline-primary difficulty-btn" data-difficulty="4">Fácil</button>
-                                        <button class="btn btn-outline-success difficulty-btn" data-difficulty="5">Muito Fácil</button>
-                                    </div>
-                                </div>
-                                
-                                <button id="next-question-btn" class="btn btn-primary w-100">Próxima Questão</button>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="progress">
-                                <div id="quiz-progress" class="progress-bar" role="progressbar" style="width: 0%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Questão -->
+        <div class="question">
+            Qual é a principal diferença entre a remifentanila e outros opioides?
+        </div>
+
+        <!-- Opções -->
+        <div class="options">
+            <div class="option">
+                <div class="option-number">0</div>
+                É o único opioide que pode ser usado em pacientes com insuficiência renal
+            </div>
+            <div class="option correct">
+                <div class="option-number">1</div>
+                É indicada para analgesia durante procedimentos cirúrgicos e no período pós-operatório imediato
+            </div>
+            <div class="option">
+                <div class="option-number">2</div>
+                Tem duração de ação muito longa, de até 24 horas
+            </div>
+            <div class="option">
+                <div class="option-number">3</div>
+                É o único opioide que não causa depressão respiratória
+            </div>
+            <div class="option">
+                <div class="option-number">4</div>
+                É administrada apenas por via oral
             </div>
         </div>
 
-        <!-- Tela de Resultados -->
-        <div id="results-screen" class="screen d-none">
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6">
-                    <div class="card shadow-lg mt-5">
-                        <div class="card-header bg-primary text-white">
-                            <h2 id="results-module-title">Resultados</h2>
-                        </div>
-                        <div class="card-body">
-                            <div class="text-center mb-4">
-                                <div id="score-circle" class="score-circle mx-auto">
-                                    <span id="score-percentage">0%</span>
-                                </div>
-                            </div>
-                            
-                            <div class="row text-center mb-4">
-                                <div class="col-6">
-                                    <div class="result-box bg-success text-white p-3 rounded">
-                                        <h3 id="final-correct-count">0</h3>
-                                        <p>Corretas</p>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="result-box bg-danger text-white p-3 rounded">
-                                        <h3 id="final-incorrect-count">0</h3>
-                                        <p>Incorretas</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <h5>Tempo Total:</h5>
-                                <p id="total-time" class="lead">00:00</p>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <h5>Análise de Desempenho:</h5>
-                                <div id="performance-analysis"></div>
-                            </div>
-                            
-                            <div class="d-grid gap-2">
-                                <button id="retry-module-btn" class="btn btn-primary">Tentar Novamente</button>
-                                <button id="return-to-modules-btn" class="btn btn-secondary">Voltar para Módulos</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Explicação -->
+        <div class="explanation">
+            <h3>Explicação:</h3>
+            <p>De acordo com o material, a remifentanila 'é indicado como agente analgésico na indução e/ou manutenção da anestesia geral durante procedimentos cirúrgicos, entre eles a cirurgia cardíaca. É indicado também na continuação da analgesia durante o período pós-operatório imediato, sob estrito controle, e durante a transição para a analgesia de longa duração'. Também é mencionado que é 'igualmente indicado para promover analgesia e sedação em pacientes ventilados mecanicamente em unidade de terapia intensiva'. As outras opções contêm informações que não são especificamente mencionadas para a remifentanila no material.</p>
+        </div>
+
+        <!-- Avaliação de dificuldade -->
+        <div class="difficulty-evaluation">
+            <h3>Quão difícil foi esta questão?</h3>
+            <div class="difficulty-options">
+                <div class="difficulty-btn muito-dificil">Muito Difícil</div>
+                <div class="difficulty-btn dificil">Difícil</div>
+                <div class="difficulty-btn medio">Médio</div>
+                <div class="difficulty-btn facil">Fácil</div>
+                <div class="difficulty-btn muito-facil">Muito Fácil</div>
             </div>
+        </div>
+
+        <!-- Botão de próxima questão -->
+        <div class="next-button">Próxima Questão</div>
+
+        <!-- Barra de progresso -->
+        <div class="progress-bar-container">
+            <div class="progress-bar" style="width: 3%;"></div>
         </div>
     </div>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="js/data.js"></script>
-    <script src="js/spaced-repetition.js"></script>
-    <script src="js/app.js"></script>
+    <script>
+        // JavaScript simples para demonstração da interface
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+        });
+    </script>
 </body>
 </html>
