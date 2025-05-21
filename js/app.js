@@ -299,15 +299,15 @@ function loadQuestion() {
     
     // Adiciona as novas opções
     question.options.forEach((option, index) => {
-        const optionElement = document.createElement('div');
-        optionElement.className = 'option mb-2 p-3 border rounded';
-        optionElement.textContent = option;
-        optionElement.dataset.index = index;
-        
-        optionElement.addEventListener('click', () => selectOption(optionElement, index));
-        
-        optionsContainer.appendChild(optionElement);
-    });
+    const optionElement = document.createElement('div');
+    optionElement.className = 'option-btn mb-2 p-3 border rounded';
+    optionElement.textContent = option;
+    optionElement.dataset.index = index;
+    
+    optionElement.addEventListener('click', () => selectOption(optionElement, index));
+    
+    optionsContainer.appendChild(optionElement);
+});
     
     // Esconde a explicação
     document.getElementById('explanation-container').classList.add('d-none');
