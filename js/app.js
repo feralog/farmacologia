@@ -319,7 +319,10 @@ function loadQuestion() {
     document.getElementById('next-question-btn').disabled = true;
     
     // Esconde os botões de dificuldade
-    document.getElementById('difficulty-container').classList.add('d-none');
+    const difficultyContainer = document.getElementById('spaced-repetition-container');
+if (difficultyContainer) {
+  difficultyContainer.classList.add('d-none');
+}
 }
 
 /**
