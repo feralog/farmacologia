@@ -358,7 +358,7 @@ function selectOption(optionElement, index) {
     document.getElementById('explanation-text').textContent = question.explanation;
     
     // Mostra os botões de dificuldade
-    document.getElementById('difficulty-container').classList.remove('d-none');
+    document.getElementById('spaced-repetition-container').classList.remove('d-none');
     
     // Atualiza o progresso do usuário
     if (isReviewMode) {
@@ -379,8 +379,8 @@ function nextQuestion() {
     }
     
     // Verifica se foi selecionada uma dificuldade
-    if (document.getElementById('difficulty-container').classList.contains('d-none') === false && 
-        !document.querySelector('.difficulty-btn.selected')) {
+    if (document.getElementById('spaced-repetition-container').classList.contains('d-none') === false && 
+    !document.querySelector('.difficulty-btn.selected')) {
         alert('Por favor, avalie a dificuldade da questão antes de continuar.');
         return;
     }
