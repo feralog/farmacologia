@@ -285,7 +285,7 @@ function loadQuestion() {
     const question = currentQuestions[currentQuestionIndex];
     
     // Atualiza o título do módulo
-    document.getElementById('quiz-module-title').textContent = isReviewMode ? 'Revisão Espaçada' : currentModule;
+    document.getElementById('quiz-title').textContent = isReviewMode ? 'Revisão Espaçada' : currentModule;
     
     // Atualiza o contador de questões
     document.getElementById('question-counter').textContent = `Questão ${currentQuestionIndex + 1} de ${currentQuestions.length}`;
