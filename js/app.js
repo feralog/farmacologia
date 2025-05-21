@@ -288,7 +288,7 @@ function loadQuestion() {
     document.getElementById('quiz-title').textContent = isReviewMode ? 'Revisão Espaçada' : currentModule;
     
     // Atualiza o contador de questões
-    document.getElementById('question-counter').textContent = `Questão ${currentQuestionIndex + 1} de ${currentQuestions.length}`;
+    document.getElementById('question-number').textContent = `${currentQuestionIndex + 1}/${currentQuestions.length}`;
     
     // Atualiza o texto da questão
     document.getElementById('question-text').textContent = question.question;
@@ -407,7 +407,7 @@ function finishQuiz() {
     const score = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
     
     // Atualiza os elementos da tela de resultados
-    document.getElementById('results-module-title').textContent = isReviewMode ? 'Revisão Espaçada' : currentModule;
+    
     document.getElementById('results-score').textContent = `${score}%`;
     document.getElementById('results-correct').textContent = correctAnswers;
     document.getElementById('results-incorrect').textContent = incorrectAnswers;
@@ -436,7 +436,7 @@ function startTimer() {
     
     quizTimer = setInterval(() => {
         quizSeconds++;
-        document.getElementById('timer-display').textContent = formatTime(quizSeconds);
+        document.getElementById('timer').innerHTML = `<i class="fas fa-clock me-1"></i>${formatTime(quizSeconds)}`;
     }, 1000);
 }
 
